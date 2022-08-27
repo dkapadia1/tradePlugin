@@ -2,3 +2,8 @@ name: TradePlugin
 version: '${project.version}'
 main: tradeplugin.tradeplugin.TradePlugin
 api-version: 1.19
+commands:
+  trade:
+    description: trade
+    usage: /trade
+

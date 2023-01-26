@@ -38,7 +38,7 @@ public class TradeGUI implements Listener
 
     // You can call this whenever you want to put the items in
     public void initializeItems(Inventory inv) {
-        inv.addItem(createGuiItem(Material.GOLD_BLOCK, "Put in Money", "§aFirst line of the lore", "§bSecond line of the lore"));
+        inv.addItem(createGuiItem(Material.GOLD_BLOCK, "Put in Money", ""));
     }
 
     // Nice little method to create a gui item with a custom name, and description
@@ -60,14 +60,14 @@ public class TradeGUI implements Listener
     // You can open the inventory with this
     public void openInventory(final HumanEntity ent, boolean one) {
         if(one){ ent.openInventory(inv1);}
-        else if(!one){ent.openInventory(inv1);}
+        else if(!one){ent.openInventory(inv2);}
 
     }
 
     // Check for clicks on items
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
-        if (!e.getInventory().equals(inv1) || !e.getInventory().equals(inv2)) return;
+        if (!e.getInventory().equals(inv1) && !e.getInventory().equals(inv2)) return;
 
         e.setCancelled(true);
 
@@ -93,6 +93,7 @@ public class TradeGUI implements Listener
         {
             e.getPlayer().getPersistentDataContainer().set(TradePlugin.money, PersistentDataType.INTEGER,(e.getPlayer().getPersistentDataContainer().get(TradePlugin.money, PersistentDataType.INTEGER) - money2 + money1));
         }
+        TradePlugin.updateMoney(((Player) e.getPlayer()));
     }
 
     // Cancel dragging in our inventory

@@ -6,4 +6,7 @@ commands:
   trade:
     description: trade
     usage: /trade
+  AddMoney:
+      description: Add Money to mans
+      usage: /AddMoney mans moneys
 

@@ -1,10 +1,13 @@
 package tradeplugin.tradeplugin;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.*;
+import tradeplugin.tradeplugin.Commands.AddMoney;
 import tradeplugin.tradeplugin.Commands.Trade;
 import tradeplugin.tradeplugin.GUI.TradeGUI;
 import tradeplugin.tradeplugin.Handlers.PlayerJoinHandler;
@@ -18,16 +21,20 @@ public final class TradePlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        money = new NamespacedKey(this, "money");
         plugin = this;
         ph = new PlayerJoinHandler();
         tGUI = new TradeGUI();
         tGUI.plugin = this;
         trade = new Trade();
         trade.plugin =this;
+        AddMoney AddMoneyCommand = new AddMoney();
+        AddMoneyCommand.plugin = this;
         Bukkit.getPluginManager().registerEvents(ph,this);
         Bukkit.getPluginManager().registerEvents(tGUI,this);
         getCommand("trade").setExecutor(trade);
-        money = new NamespacedKey(this, "money");
+        getCommand("AddMoney").setExecutor(AddMoneyCommand);
+
 
 
 
@@ -38,6 +45,29 @@ public final class TradePlugin extends JavaPlugin {
         return(p.getPersistentDataContainer().get(money, PersistentDataType.INTEGER));
 
     }
+    public static void updateMoney(Player player)
+    {
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard s = manager.getNewScoreboard();
+
+        Objective objective = s.registerNewObjective("Bank", Criteria.create("Money"), (ChatColor.BLUE + "Money"));
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        Score score = objective.getScore("Money "+ TradePlugin.getMoney(player) );
+        player.setScoreboard(score.getScoreboard());
+        score.setScore(1);
+    }
+    public static void updateMoney(Player player, String addon)
+    {
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard s = manager.getNewScoreboard();
+
+        Objective objective = s.registerNewObjective("Bank", Criteria.create("Money"), (ChatColor.BLUE + "Money"));
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        Score score = objective.getScore("Money "+ TradePlugin.getMoney(player) + addon);
+        player.setScoreboard(score.getScoreboard());
+        score.setScore(1);
+    }
+
 
     @Override
     public void onDisable() {

@@ -34,16 +34,16 @@ public final class TradePlugin extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(tGUI,this);
         getCommand("trade").setExecutor(trade);
         getCommand("AddMoney").setExecutor(AddMoneyCommand);
-
-
-
-
-
     }
     public static Integer getMoney(Player p)
     {
         return(p.getPersistentDataContainer().get(money, PersistentDataType.INTEGER));
 
+    }
+    public static void setMoney(Player player, int deltamoney)
+    {
+        player.getPersistentDataContainer().set(money, PersistentDataType.INTEGER, getMoney(player) + deltamoney) ;
+        updateMoney(player);
     }
     public static void updateMoney(Player player)
     {

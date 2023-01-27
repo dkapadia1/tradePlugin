@@ -18,19 +18,17 @@ public class AddMoney implements CommandExecutor {
 
         @Override
         public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+            //Make sure you have args
             if(args.length < 2) {
                 return false;
             }
-            if (TradePlugin.money == null) {
-                sender.sendMessage(":wahhhhh");
-            }
-           Player p = sender.getServer().getPlayerExact(args[0]);
-            PersistentDataContainer d = p.getPersistentDataContainer();
-            d.set(TradePlugin.money, PersistentDataType.INTEGER, (TradePlugin.getMoney(p) + Integer.parseInt(args[1])));
-          //getPersistentDataContainer().set(money, PersistentDataType.INTEGER, ))*/
-            sender.sendMessage(String.valueOf((int)d.get(TradePlugin.money, PersistentDataType.INTEGER)));
-            TradePlugin.updateMoney(p);
-            return true;
+            //TRY  to convert strings to int and player. Just sends error message if fails
+           try {Player p = sender.getServer().getPlayerExact(args[0]);
+               TradePlugin.setMoney(p, Integer.parseInt(args[1]));}
+           catch (IllegalArgumentException iae){sender.sendMessage(ChatColor.RED + iae.toString()); return false; }
+           return true;
+
+
         }
     }
 

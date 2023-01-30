@@ -9,4 +9,7 @@ commands:
   AddMoney:
       description: Add Money to mans
       usage: /AddMoney mans moneys
+    SignTest:
+      description : test sign gui
+      usage: /signtest thats it. no args thats too hard.
 

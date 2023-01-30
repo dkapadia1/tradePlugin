@@ -8,7 +8,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.*;
 import tradeplugin.tradeplugin.Commands.AddMoney;
+import tradeplugin.tradeplugin.Commands.SignTest;
 import tradeplugin.tradeplugin.Commands.Trade;
+import tradeplugin.tradeplugin.GUI.SignGUI;
 import tradeplugin.tradeplugin.GUI.TradeGUI;
 import tradeplugin.tradeplugin.Handlers.PlayerJoinHandler;
 
@@ -18,6 +20,9 @@ public final class TradePlugin extends JavaPlugin {
     public TradeGUI tGUI;
     public Trade trade;
     public static TradePlugin plugin;
+
+    public SignGUI sign;
+    public SignTest signtest;
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -30,10 +35,14 @@ public final class TradePlugin extends JavaPlugin {
         trade.plugin =this;
         AddMoney AddMoneyCommand = new AddMoney();
         AddMoneyCommand.plugin = this;
+        sign = new SignGUI(this);
+        signtest = new SignTest();
+        signtest.plugin = plugin;
         Bukkit.getPluginManager().registerEvents(ph,this);
         Bukkit.getPluginManager().registerEvents(tGUI,this);
         getCommand("trade").setExecutor(trade);
         getCommand("AddMoney").setExecutor(AddMoneyCommand);
+        getCommand("SignTest").setExecutor(signtest);
     }
     public static Integer getMoney(Player p)
     {
@@ -71,6 +80,7 @@ public final class TradePlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        sign.destroy();
         // Plugin shutdown logic
     }
 }

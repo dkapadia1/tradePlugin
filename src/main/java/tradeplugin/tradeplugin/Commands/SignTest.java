@@ -16,8 +16,14 @@ public class SignTest implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 
-        plugin.sign.open(sender.getServer().getPlayerExact(sender.getName()), new String[] { "test0", "test1", "test2", "test3" }, (player, lines) -> sender.sendMessage(lines[0]));
-        return true;
+        plugin.sign.open(sender.getServer().getPlayerExact(sender.getName()), new String[]{"test0", "test1", "test2", "test3"}, new SignGUI.SignGUIListener() {
+            @Override
+            public void onSignDone(Player player, String[] lines) {
+                // do something with the input
+                sender.sendMessage(lines[0]);
+            }
 
+        });
+        return true;
     }
 }

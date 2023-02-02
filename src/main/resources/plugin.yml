@@ -1,6 +1,7 @@
 name: TradePlugin
 version: '${project.version}'
 main: tradeplugin.tradeplugin.TradePlugin
+depend: [ProtocolLib]
 api-version: 1.19
 commands:
   trade:

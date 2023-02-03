@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import com.comphenix.protocol.*;
+import com.comphenix.protocol.reflect.*;
 
 
 public class SignGUI {
@@ -63,13 +64,16 @@ public class SignGUI {
     public void open(Player player, String[] defaultText, SignGUIListener response) {
         List<PacketContainer> packets = new ArrayList<PacketContainer>();
 
-        int x = 0, y = 0, z = 0;
+        int x = 1, y = 1, z = 1;
         if (defaultText != null) {
             x = player.getLocation().getBlockX();
             z = player.getLocation().getBlockZ();
 
-            PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-            packet53.getIntegers().write(0, x).write(1, y).write(2, z);
+            PacketContainer packet53 = new PacketContainer(PacketType.Play.Server.BLOCK_CHANGE);
+
+            Bukkit.getLogger().info(packet53.getStructures().toString());
+            packet53.getIntegers().write(1, x).write(2, y).write(3, z);
+
             packet53.getBlocks().write(0, Material.OAK_SIGN);
             packets.add(packet53);
 
@@ -82,7 +86,7 @@ public class SignGUI {
         PacketContainer packet133 = protocolManager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
         packet133.getIntegers().write(0, x).write(2, z);
         packets.add(packet133);
-
+        
         if (defaultText != null) {
             PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
             packet53.getIntegers().write(0, x).write(1, 0).write(2, z);

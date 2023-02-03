@@ -7,6 +7,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import tradeplugin.tradeplugin.GUI.SignGUI;
 import tradeplugin.tradeplugin.TradePlugin;
+import com.comphenix.protocol.*;
+import com.comphenix.protocol.reflect.*;
+
+import java.util.Arrays;
 
 public class SignTest implements CommandExecutor {
 
@@ -15,15 +19,18 @@ public class SignTest implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-
-       plugin.sign.open(sender.getServer().getPlayerExact(sender.getName()), new String[]{"test0", "test1", "test2", "test3"}, new SignGUI.SignGUIListener() {
+        Bukkit.getLogger().info("we start");
+       try {plugin.sign.open(sender.getServer().getPlayerExact(args[0]), new String[]{"test0", "test1", "test2", "test3"}, new SignGUI.SignGUIListener() {
             @Override
             public void onSignDone(Player player, String[] lines) {
                 // do something with the input
                 sender.sendMessage(lines[0]);
             }
 
-        });
+        });}
+       catch(FieldAccessException e){
+           Bukkit.getLogger().info(Arrays.toString(e.getStackTrace()));
+       }
         return true;
     }
 }

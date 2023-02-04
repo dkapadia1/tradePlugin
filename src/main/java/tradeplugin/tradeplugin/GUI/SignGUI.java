@@ -7,7 +7,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.comphenix.protocol.events.*;
+import com.comphenix.protocol.wrappers.BlockPosition;
+import com.comphenix.protocol.wrappers.WrappedBlockData;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -70,15 +73,12 @@ public class SignGUI {
             z = player.getLocation().getBlockZ();
 
             PacketContainer packet53 = new PacketContainer(PacketType.Play.Server.BLOCK_CHANGE);
-
-            Bukkit.getLogger().info(packet53.getStructures().toString());
-            packet53.getIntegers().write(1, x).write(2, y).write(3, z);
-
-            packet53.getBlocks().write(0, Material.OAK_SIGN);
+            packet53.getBlockPositionModifier().write(0, new BlockPosition(x, y, z));
+           packet53.getBlockData().write(0, WrappedBlockData.createData(Material.OAK_SIGN));
+            //packet53.getIntegers().write(1, x).write(2, y).write(3, z);
             packets.add(packet53);
-
-            PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-            packet130.getIntegers().write(0, x).write(1,y).write(2, z);
+            PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
+            packet130.getBlockPositionModifier().write(0, new BlockPosition(x, y, z));
             packet130.getStringArrays().write(0, defaultText);
             packets.add(packet130);
         }

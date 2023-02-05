@@ -44,7 +44,7 @@ public class SignGUI {
 
                         Vector v = signLocations.remove(player.getName());
                         if (v == null) return;
-                        List<Integer> list = event.getPacket().getIntegers().getValues();
+                        List<Integer> list = event.getPacket().getBlockPositionModifier().getFields();
                         if (list.get(0) != v.getBlockX()) return;
                         if (list.get(1) != v.getBlockY()) return;
                         if (list.get(2) != v.getBlockZ()) return;
@@ -77,20 +77,20 @@ public class SignGUI {
            packet53.getBlockData().write(0, WrappedBlockData.createData(Material.OAK_SIGN));
             //packet53.getIntegers().write(1, x).write(2, y).write(3, z);
             packets.add(packet53);
-            PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
+            /* PacketContainer packet130 = protocolManager.createPacket(PacketType.Play.Server.UPDATE_SIGN);
             packet130.getBlockPositionModifier().write(0, new BlockPosition(x, y, z));
             packet130.getStringArrays().write(0, defaultText);
-            packets.add(packet130);
+            packets.add(packet130);*/
         }
 
         PacketContainer packet133 = protocolManager.createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-        packet133.getIntegers().write(0, x).write(2, z);
+        packet133.getBlockPositionModifier().write(0, new BlockPosition(x, y, z));
         packets.add(packet133);
         
         if (defaultText != null) {
             PacketContainer packet53 = protocolManager.createPacket(PacketType.Play.Server.BLOCK_CHANGE);
-            packet53.getIntegers().write(0, x).write(1, 0).write(2, z);
-            packet53.getBlocks().write(0, org.bukkit.Material.BEDROCK);
+            packet53.getBlockPositionModifier().write(0, new BlockPosition(x, y, z));
+            packet53.getBlockData().write(0, WrappedBlockData.createData(Material.BEDROCK));
             packets.add(packet53);
         }
 

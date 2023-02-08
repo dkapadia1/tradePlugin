@@ -2,6 +2,7 @@ package tradeplugin.tradeplugin.GUI;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,10 +45,12 @@ public class SignGUI {
 
                         Vector v = signLocations.remove(player.getName());
                         if (v == null) return;
-                        List<Integer> list = event.getPacket().getBlockPositionModifier().getFields();
-                        if (list.get(0) != v.getBlockX()) return;
-                        if (list.get(1) != v.getBlockY()) return;
-                        if (list.get(2) != v.getBlockZ()) return;
+                        int blockx = event.getPacket().getBlockPositionModifier().read(0).getX();
+                        int blocky = event.getPacket().getBlockPositionModifier().read(0).getY();
+                        int blockz = event.getPacket().getBlockPositionModifier().read(0).getZ();
+                        if (blockx != v.getBlockX()) {event.getPlayer().sendMessage( v.getBlockX() + " x" + blockx);return;}
+                        if (blocky != v.getBlockY()) {event.getPlayer().sendMessage( v.getBlockY() + " y" + blocky);return;}
+                        if (blockz != v.getBlockZ()) {event.getPlayer().sendMessage( v.getBlockZ() + " z" + blockz);return;}
 
                         final String[] lines = event.getPacket().getStringArrays().getValues().get(0);
                         final SignGUIListener response = listeners.remove(event.getPlayer().getName());

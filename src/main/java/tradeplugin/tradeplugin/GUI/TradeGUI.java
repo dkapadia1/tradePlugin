@@ -28,8 +28,8 @@ public class TradeGUI implements Listener
 
     public TradeGUI() {
         // Create a new inventory, with no owner (as this isn't a real inventory), a size of nine, called example
-        inv1 = Bukkit.createInventory(null, 9, "Example");
-        inv2 = Bukkit.createInventory(null, 9, "Example");
+        inv1 = Bukkit.createInventory(null, 9, "1");
+        inv2 = Bukkit.createInventory(null, 9, "2");
 
         // Put the items into the inventory
         initializeItems(inv1);
@@ -68,7 +68,7 @@ public class TradeGUI implements Listener
     @EventHandler
     public void onInventoryClick(final InventoryClickEvent e) {
         if (!e.getInventory().equals(inv1) && !e.getInventory().equals(inv2)) return;
-
+        boolean one = e.getInventory().equals(inv1);
         e.setCancelled(true);
 
         final ItemStack clickedItem = e.getCurrentItem();
@@ -80,6 +80,19 @@ public class TradeGUI implements Listener
 
         // Using slots click is a best option for your inventory click's
         p.sendMessage("You clicked at slot " + e.getRawSlot());
+        if(e.getRawSlot() == 0){
+            plugin.sign.open(p, new String[]{"test0", "test1", "test2", "test3"}, new SignGUI.SignGUIListener() {
+                @Override
+                public void onSignDone(Player player, String[] lines) {
+                    // do something with the input
+                    //p.sendMessage(lines[0]);
+                    inv1.clear(0);
+                    inv2.clear(0);
+                    inv1.addItem(createGuiItem(Material.GOLD_BLOCK, lines[0], lines[1]));
+                    inv2.addItem(createGuiItem(Material.GOLD_BLOCK, lines[0], lines[1]));
+                    e.getWhoClicked().openInventory(one? inv1 : inv2);
+                }} );
+        }
     }
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent e)

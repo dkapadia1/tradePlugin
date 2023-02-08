@@ -11,14 +11,19 @@ public class Trade implements CommandExecutor {
 
     public TradePlugin plugin;
 
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        TradeGUI tGUI = new TradeGUI();
+        Bukkit.getPluginManager().registerEvents(tGUI,plugin);
+        tGUI.plugin = plugin;
         if(args.length == 0)
         {
             return false;
         }
-       plugin.tGUI.openInventory(sender.getServer().getPlayerExact(sender.getName()), true);
-        plugin.tGUI.openInventory(sender.getServer().getPlayer(args[0]), false);
+        tGUI.openInventory(sender.getServer().getPlayerExact(sender.getName()), true);
+        tGUI.openInventory(sender.getServer().getPlayer(args[0]), false);
+
         Bukkit.getLogger().info(sender.getServer().getPlayerExact(sender.getName()).getName());
 
         return true;

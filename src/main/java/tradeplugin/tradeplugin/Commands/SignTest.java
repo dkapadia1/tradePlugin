@@ -24,7 +24,7 @@ public class SignTest implements CommandExecutor {
             @Override
             public void onSignDone(Player player, String[] lines) {
                 // do something with the input
-                sender.sendMessage(lines[0]);
+                sender.sendMessage(lines[0] + "nooooo");
             }
 
         });}
